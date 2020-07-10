@@ -1,1 +1,4 @@
 .idea/
+dist/
+rpg-creator.spec
+__pycache__
