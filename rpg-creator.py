@@ -17,6 +17,7 @@ class Character(ABC):
         self.charisma = charisma
         self.lifePoints = 100
         self.experience = 0
+        self.level = 1
 
     def characterStats(self):
         print(f'Character stats: {vars(self)}')
@@ -29,6 +30,15 @@ class Character(ABC):
         print(f"{self.name} lost {(points * self.durability) / 100} life points.")
         self.lifePoints -= points * self.durability / 100
         print(f"{self.name} have {round(self.lifePoints)} life points left.")
+
+    def lvl(self):
+        if self.experience%20 == 0:
+            self.level += 1
+            self.strength += 2
+            self.dexterity += 2
+            self.durability += 2
+            self.intellect += 2
+            self.discernment += 2
 
 
 class Archer(Character):
@@ -101,7 +111,7 @@ class Team:
         else:
             print('Team members: ')
             for key, group in itertools.groupby(self.teamMembers, lambda member: str(type(member))[17:-2]):
-                print(key,":", len(list(group)))
+                print(key, ":", len(list(group)))
 
 
 def fight(player1, player2):
@@ -120,12 +130,14 @@ def fight(player1, player2):
         print(f"{player2.name} won!\n+10exp")
         print('-' * 20)
         player2.experience += 10
+        player2.lvl()
         time.sleep(5)
     elif player2.lifePoints <= 0:
         print('-' * 20)
         print(f"{player1.name} won!\n+10exp")
         print('-' * 20)
         player1.experience += 10
+        player1.lvl()
         time.sleep(5)
     player1.lifePoints = 100
     player2.lifePoints = 100
